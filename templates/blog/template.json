@@ -1,0 +1,18 @@
+{
+  "id": "blog",
+  "name": "Blog Platform",
+  "description": "Modern blogging platform with CMS, MDX support, and SEO optimization",
+  "category": "Content",
+  "technologies": ["Next.js", "MDX", "Tailwind CSS", "Prisma"],
+  "features": [
+    "Rich text editor",
+    "MDX support for code snippets",
+    "Category and tag system",
+    "Comment system",
+    "SEO optimization",
+    "RSS feed",
+    "Search functionality",
+    "Author profiles"
+  ],
+  "promptTemplate": "Create a blog platform with support for {features}. Include a clean reading experience and modern design."
+}

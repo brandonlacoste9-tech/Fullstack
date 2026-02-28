@@ -1,0 +1,165 @@
+// Prisma schema for Full-Stack Platform
+// 8 data models: User, Project, Task, Team, TeamMember, Deployment, Subscription, Activity
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Model 1: User
+model User {
+  id            String   @id @default(cuid())
+  clerkId       String   @unique // Clerk authentication ID
+  email         String   @unique
+  name          String?
+  avatar        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  projects      Project[]
+  tasks         Task[]
+  teamMembers   TeamMember[]
+  activities    Activity[]
+  subscription  Subscription?
+  
+  @@map("users")
+}
+
+// Model 2: Project
+model Project {
+  id              String   @id @default(cuid())
+  name            String
+  description     String?
+  template        String?  // One of 6 example templates
+  githubRepoUrl   String?
+  vercelProjectId String?
+  userId          String
+  teamId          String?
+  status          String   @default("active") // active, archived, deploying
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team            Team?      @relation(fields: [teamId], references: [id])
+  tasks           Task[]
+  deployments     Deployment[]
+  activities      Activity[]
+  
+  @@map("projects")
+}
+
+// Model 3: Task
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("pending") // pending, in_progress, completed, failed
+  priority    String   @default("medium") // low, medium, high
+  agentType   String?  // Which of 5 agents handled this
+  projectId   String
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  completedAt DateTime?
+  
+  // Relations
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id])
+  
+  @@map("tasks")
+}
+
+// Model 4: Team
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  members     TeamMember[]
+  projects    Project[]
+  
+  @@map("teams")
+}
+
+// Model 5: TeamMember
+model TeamMember {
+  id        String   @id @default(cuid())
+  role      String   @default("member") // owner, admin, member
+  teamId    String
+  userId    String
+  createdAt DateTime @default(now())
+  
+  // Relations
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([teamId, userId])
+  @@map("team_members")
+}
+
+// Model 6: Deployment
+model Deployment {
+  id              String   @id @default(cuid())
+  projectId       String
+  vercelUrl       String?
+  status          String   @default("pending") // pending, building, ready, error
+  environment     String   @default("production") // production, staging
+  commitSha       String?
+  createdAt       DateTime @default(now())
+  deployedAt      DateTime?
+  
+  // Relations
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@map("deployments")
+}
+
+// Model 7: Subscription
+model Subscription {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  stripeCustomerId String  @unique
+  stripePriceId   String
+  tier            String   @default("free") // free, pro, enterprise
+  status          String   @default("active") // active, canceled, past_due
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Usage tracking
+  tokensUsed      Int      @default(0)
+  projectsCount   Int      @default(0)
+  deploymentsCount Int     @default(0)
+  
+  // Relations
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("subscriptions")
+}
+
+// Model 8: Activity
+model Activity {
+  id          String   @id @default(cuid())
+  type        String   // project_created, task_completed, deployment_success, etc.
+  description String
+  metadata    Json?    // Additional data about the activity
+  projectId   String?
+  userId      String
+  createdAt   DateTime @default(now())
+  
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@map("activities")
+}
