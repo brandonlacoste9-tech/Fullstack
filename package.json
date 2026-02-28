@@ -1,0 +1,44 @@
+{
+  "name": "fullstack-studio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "echo 'No tests configured yet' && exit 0",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.39.0",
+    "@hookform/resolvers": "^5.2.2",
+    "@octokit/rest": "^22.0.1",
+    "@prisma/client": "^7.4.2",
+    "@stripe/stripe-js": "^8.8.0",
+    "axios": "^1.13.6",
+    "date-fns": "^4.1.0",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-hook-form": "^7.71.2",
+    "recharts": "^3.7.0",
+    "stripe": "^20.4.0",
+    "svix": "^1.86.0",
+    "swr": "^2.4.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "prisma": "^7.4.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
