@@ -12,6 +12,39 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Rate limiting middleware
+const rateLimit = {};
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 100; // 100 requests per minute
+
+function rateLimiter(req, res, next) {
+  const identifier = req.auth?.userId || req.ip;
+  const now = Date.now();
+  
+  if (!rateLimit[identifier]) {
+    rateLimit[identifier] = { count: 1, resetTime: now + RATE_LIMIT_WINDOW };
+    return next();
+  }
+  
+  if (now > rateLimit[identifier].resetTime) {
+    rateLimit[identifier] = { count: 1, resetTime: now + RATE_LIMIT_WINDOW };
+    return next();
+  }
+  
+  if (rateLimit[identifier].count >= RATE_LIMIT_MAX_REQUESTS) {
+    return res.status(429).json({ 
+      error: 'Too many requests', 
+      retryAfter: Math.ceil((rateLimit[identifier].resetTime - now) / 1000) 
+    });
+  }
+  
+  rateLimit[identifier].count++;
+  next();
+}
+
+// Apply rate limiting to all routes
+app.use(rateLimiter);
+
 // Initialize Agent Swarm
 const agentSwarm = new AgentSwarm();
 
