@@ -94,7 +94,10 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Activity Feed */}
-      <ActivityFeed activities={user.activities} />
+      <ActivityFeed activities={user.activities.map(a => ({
+        ...a,
+        timestamp: a.createdAt
+      }))} />
     </div>
   )
 }
