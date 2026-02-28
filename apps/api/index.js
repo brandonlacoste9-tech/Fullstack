@@ -111,34 +111,43 @@ app.post('/api/projects', ClerkExpressRequireAuth(), async (req, res) => {
 });
 
 // Feature 4: GitHub Integration
+// Note: Rate limiting is applied via global middleware above
 app.post('/api/github/create-repo', ClerkExpressRequireAuth(), async (req, res) => {
-  const { Octokit } = require('@octokit/rest');
-  const octokit = new Octokit({ auth: req.body.githubToken });
-  
-  const repo = await octokit.repos.createForAuthenticatedUser({
-    name: req.body.name,
-    description: req.body.description,
-    private: false,
-    auto_init: true
-  });
-  
-  res.json({ repo: repo.data });
+  try {
+    const { Octokit } = require('@octokit/rest');
+    const octokit = new Octokit({ auth: req.body.githubToken });
+    
+    const repo = await octokit.repos.createForAuthenticatedUser({
+      name: req.body.name,
+      description: req.body.description,
+      private: false,
+      auto_init: true
+    });
+    
+    res.json({ repo: repo.data });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.post('/api/github/create-pr', ClerkExpressRequireAuth(), async (req, res) => {
-  const { Octokit } = require('@octokit/rest');
-  const octokit = new Octokit({ auth: req.body.githubToken });
-  
-  const pr = await octokit.pulls.create({
-    owner: req.body.owner,
-    repo: req.body.repo,
-    title: req.body.title,
-    body: req.body.body,
-    head: req.body.head,
-    base: 'main'
-  });
-  
-  res.json({ pr: pr.data });
+  try {
+    const { Octokit } = require('@octokit/rest');
+    const octokit = new Octokit({ auth: req.body.githubToken });
+    
+    const pr = await octokit.pulls.create({
+      owner: req.body.owner,
+      repo: req.body.repo,
+      title: req.body.title,
+      body: req.body.body,
+      head: req.body.head,
+      base: 'main'
+    });
+    
+    res.json({ pr: pr.data });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Feature 5: Vercel Integration
