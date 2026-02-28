@@ -246,7 +246,7 @@ function ChatMessage({ message }) {
   const isUser = message.type === 'user';
   return (
     <View style={[styles.chatMessage, isUser ? styles.userMessage : styles.agentMessage]}>
-      <Text style={styles.messageText}>{message.text}</Text>
+      <Text style={[styles.messageText, isUser ? styles.userMessageText : styles.agentMessageText]}>{message.text}</Text>
       <Text style={styles.messageTime}>{message.time}</Text>
     </View>
   );
@@ -448,6 +448,11 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 14,
+  },
+  userMessageText: {
+    color: '#FFFFFF',
+  },
+  agentMessageText: {
     color: '#111827',
   },
   messageTime: {
