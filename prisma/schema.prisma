@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// 1. User Model - Main user accounts
+model User {
+  id              String   @id @default(cuid())
+  clerkId         String   @unique
+  email           String   @unique
+  name            String?
+  imageUrl        String?
+  stripeCustomerId String? @unique
+  subscriptionTier String  @default("FREE") // FREE, PRO, ENTERPRISE
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  projects        Project[]
+  teamMembers     TeamMember[]
+  activities      Activity[]
+  usageMetrics    UsageMetric[]
+  ownedTeams      Team[]        @relation("TeamOwner")
+}
+
+// 2. Project Model - User projects
+model Project {
+  id              String   @id @default(cuid())
+  name            String
+  description     String?
+  status          String   @default("ACTIVE") // ACTIVE, ARCHIVED, DELETED
+  githubRepoUrl   String?
+  vercelProjectId String?
+  vercelUrl       String?
+  templateId      String?
+  userId          String
+  teamId          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  user            User     @relation(fields: [userId], references: [id])
+  team            Team?    @relation(fields: [teamId], references: [id])
+  tasks           Task[]
+  activities      Activity[]
+  deployments     Deployment[]
+  
+  @@index([userId])
+  @@index([teamId])
+}
+
+// 3. Task Model - Tasks within projects
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("TODO") // TODO, IN_PROGRESS, DONE, BLOCKED
+  priority    String   @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  projectId   String
+  assignedTo  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  completedAt DateTime?
+  
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId])
+}
+
+// 4. Team Model - Team/organization management
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  owner       User         @relation("TeamOwner", fields: [ownerId], references: [id])
+  members     TeamMember[]
+  projects    Project[]
+  
+  @@index([ownerId])
+}
+
+// 5. TeamMember Model - Team membership and roles
+model TeamMember {
+  id        String   @id @default(cuid())
+  teamId    String
+  userId    String
+  role      String   @default("MEMBER") // OWNER, ADMIN, MEMBER
+  joinedAt  DateTime @default(now())
+  
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+// 6. Activity Model - Activity tracking/audit log
+model Activity {
+  id          String   @id @default(cuid())
+  type        String   // PROJECT_CREATED, CODE_PUSHED, DEPLOYED, etc.
+  description String
+  metadata    Json?
+  userId      String
+  projectId   String?
+  createdAt   DateTime @default(now())
+  
+  user        User     @relation(fields: [userId], references: [id])
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([projectId])
+  @@index([createdAt])
+}
+
+// 7. UsageMetric Model - Track usage for analytics and billing
+model UsageMetric {
+  id              String   @id @default(cuid())
+  userId          String
+  metricType      String   // TOKENS_USED, API_CALLS, DEPLOYMENTS, etc.
+  value           Int
+  cost            Float    @default(0)
+  metadata        Json?
+  createdAt       DateTime @default(now())
+  
+  user            User     @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([createdAt])
+  @@index([metricType])
+}
+
+// 8. Deployment Model - Track Vercel deployments
+model Deployment {
+  id              String   @id @default(cuid())
+  projectId       String
+  vercelDeploymentId String?
+  status          String   @default("PENDING") // PENDING, BUILDING, READY, ERROR
+  url             String?
+  environment     String   @default("production") // production, preview, development
+  createdAt       DateTime @default(now())
+  completedAt     DateTime?
+  
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId])
+  @@index([status])
+}
