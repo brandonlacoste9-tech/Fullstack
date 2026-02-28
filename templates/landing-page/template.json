@@ -1,0 +1,18 @@
+{
+  "id": "landing-page",
+  "name": "Landing Page",
+  "description": "Beautiful marketing landing page with animations and conversions",
+  "category": "Marketing",
+  "technologies": ["Next.js", "Framer Motion", "Tailwind CSS", "EmailJS"],
+  "features": [
+    "Hero section with CTA",
+    "Feature showcase",
+    "Pricing table",
+    "Testimonials",
+    "FAQ section",
+    "Contact form",
+    "Newsletter signup",
+    "Smooth animations"
+  ],
+  "promptTemplate": "Create a landing page with {features}. Make it visually stunning with smooth animations and high conversion potential."
+}

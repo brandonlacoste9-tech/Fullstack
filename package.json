@@ -1,0 +1,38 @@
+{
+  "name": "fullstack-platform",
+  "version": "1.0.0",
+  "description": "Full-stack development platform with AI agents, GitHub/Vercel integration, and team collaboration",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "db:migrate": "npm run db:migrate --workspace=@fullstack/database",
+    "db:studio": "npm run db:studio --workspace=@fullstack/database"
+  },
+  "keywords": [
+    "fullstack",
+    "ai",
+    "agents",
+    "github",
+    "vercel",
+    "clerk",
+    "stripe",
+    "react-native"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandonlacoste9-tech/Fullstack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brandonlacoste9-tech/Fullstack/issues"
+  },
+  "homepage": "https://github.com/brandonlacoste9-tech/Fullstack#readme"
+}

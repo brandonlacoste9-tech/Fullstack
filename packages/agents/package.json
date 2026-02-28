@@ -1,0 +1,14 @@
+{
+  "name": "@fullstack/agents",
+  "version": "1.0.0",
+  "description": "Multi-agent swarm system with 5 specialized agents",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "openai": "^4.0.0",
+    "playwright": "^1.40.0",
+    "axios": "^1.6.0"
+  }
+}

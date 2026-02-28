@@ -1,0 +1,18 @@
+{
+  "id": "social",
+  "name": "Social Network",
+  "description": "Social platform with posts, likes, comments, and user profiles",
+  "category": "Social",
+  "technologies": ["Next.js", "Clerk", "Prisma", "WebSocket"],
+  "features": [
+    "User profiles and bios",
+    "Post creation with media",
+    "Like and comment system",
+    "Follow/unfollow users",
+    "News feed algorithm",
+    "Real-time notifications",
+    "Direct messaging",
+    "Hashtag support"
+  ],
+  "promptTemplate": "Create a social network with {features}. Include a modern feed design and interactive elements."
+}

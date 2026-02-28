@@ -1,0 +1,79 @@
+{
+  "id": "ecommerce",
+  "name": "E-commerce Store",
+  "description": "Full-featured online store with shopping cart, checkout, and payment processing",
+  "category": "E-commerce",
+  "technologies": ["Next.js", "Stripe", "Prisma", "Tailwind CSS"],
+  "features": [
+    "Product catalog with search and filters",
+    "Shopping cart management",
+    "Secure checkout with Stripe",
+    "Order tracking",
+    "User accounts and order history",
+    "Admin dashboard",
+    "Inventory management",
+    "Email notifications"
+  ],
+  "promptTemplate": "Create an e-commerce store with the following features: {features}. Use modern design with product cards, a clean checkout flow, and mobile-responsive layouts.",
+  "agents": {
+    "designer": {
+      "tasks": [
+        "Create design system with e-commerce color palette",
+        "Design product card components",
+        "Design shopping cart UI",
+        "Create checkout flow mockups",
+        "Design admin dashboard"
+      ]
+    },
+    "developer": {
+      "tasks": [
+        "Setup Next.js project structure",
+        "Implement product catalog API",
+        "Create shopping cart logic",
+        "Integrate Stripe payment processing",
+        "Build order management system",
+        "Create admin CRUD operations"
+      ]
+    },
+    "tester": {
+      "tasks": [
+        "Test product search and filtering",
+        "Test cart operations (add, remove, update)",
+        "Test checkout flow end-to-end",
+        "Test payment processing (test mode)",
+        "Test order confirmation emails"
+      ]
+    },
+    "deployer": {
+      "tasks": [
+        "Setup Vercel deployment",
+        "Configure environment variables",
+        "Setup Stripe webhooks",
+        "Deploy to production"
+      ]
+    }
+  },
+  "defaultConfig": {
+    "database": {
+      "models": ["Product", "Cart", "Order", "OrderItem", "Customer"]
+    },
+    "api": {
+      "endpoints": [
+        "GET /api/products",
+        "GET /api/products/:id",
+        "POST /api/cart/add",
+        "POST /api/checkout",
+        "GET /api/orders/:id"
+      ]
+    },
+    "pages": [
+      "/",
+      "/products",
+      "/products/[id]",
+      "/cart",
+      "/checkout",
+      "/orders",
+      "/admin"
+    ]
+  }
+}

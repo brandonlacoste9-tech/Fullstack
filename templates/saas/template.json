@@ -1,0 +1,18 @@
+{
+  "id": "saas",
+  "name": "SaaS Dashboard",
+  "description": "Analytics dashboard with charts, metrics, and data visualization",
+  "category": "SaaS",
+  "technologies": ["React", "Recharts", "PostgreSQL", "Express"],
+  "features": [
+    "Interactive charts and graphs",
+    "Real-time metrics",
+    "Data export (CSV, PDF)",
+    "User management",
+    "API integration",
+    "Custom reports",
+    "Email digests",
+    "Role-based access"
+  ],
+  "promptTemplate": "Create a SaaS analytics dashboard with {features}. Focus on data visualization and user experience."
+}
