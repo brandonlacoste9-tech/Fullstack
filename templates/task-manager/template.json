@@ -1,0 +1,18 @@
+{
+  "id": "task-manager",
+  "name": "Task Manager",
+  "description": "Kanban-style task management application with drag-and-drop",
+  "category": "Productivity",
+  "technologies": ["React", "DnD Kit", "Zustand", "Tailwind CSS"],
+  "features": [
+    "Kanban board with columns",
+    "Drag-and-drop tasks",
+    "Task priorities and labels",
+    "Due dates and reminders",
+    "Team assignment",
+    "Progress tracking",
+    "Activity log",
+    "Export to PDF"
+  ],
+  "promptTemplate": "Create a task management app with {features}. Focus on usability and drag-and-drop interactions."
+}
