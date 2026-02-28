@@ -98,7 +98,7 @@ A comprehensive full-stack development platform with AI-powered agents, team col
 ## 📦 Tech Stack
 
 ### Frontend
-- Next.js 15 (App Router)
+- Next.js 16 (App Router)
 - TypeScript
 - Tailwind CSS
 - Recharts (Analytics)
