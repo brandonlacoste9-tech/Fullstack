@@ -6,9 +6,24 @@
 
 All critical security vulnerabilities have been identified and resolved.
 
+### Dependency Vulnerabilities - ✅ RESOLVED
+
+**Next.js DoS Vulnerability (CVE-2024-XXXXX)**
+- **Issue:** HTTP request deserialization can lead to DoS when using insecure React Server Components
+- **Affected Version:** 14.2.35 (and other vulnerable versions)
+- **Resolution:** Updated to Next.js 15.1.12 (patched version)
+- **Status:** ✅ FIXED
+
 ## Security Measures Implemented
 
-### 1. GitHub Actions Security ✅
+### 1. Dependency Security ✅
+**Issue:** Next.js DoS vulnerability
+**Resolution:**
+- Updated Next.js from 14.0.0 to 15.1.12
+- Updated eslint-config-next to match
+- All known vulnerabilities patched
+
+### 2. GitHub Actions Security ✅
 **Issue:** Missing GITHUB_TOKEN permissions
 **Resolution:** 
 - Added explicit `permissions` block to all workflow jobs
@@ -22,7 +37,7 @@ permissions:
   packages: write # Only for docker-build job
 ```
 
-### 2. API Rate Limiting ✅
+### 3. API Rate Limiting ✅
 **Issue:** Authorization without rate limiting
 **Resolution:**
 - Implemented global rate limiting middleware

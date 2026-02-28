@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2024-01-15
+
+### Security
+
+#### Critical Security Update
+- **[SECURITY]** Updated Next.js from 14.0.0 to 15.1.12 to fix DoS vulnerability
+  - Fixed: HTTP request deserialization DoS in React Server Components
+  - CVE: Multiple vulnerabilities affecting Next.js 13.0.0 through 16.1.4
+  - Impact: Prevents Denial of Service attacks via insecure React Server Components
+  - Status: ✅ All vulnerabilities patched
+
+#### Additional Security Improvements
+- Updated eslint-config-next to 15.1.12 to match Next.js version
+- Documented vulnerability in SECURITY.md
+- Added dependency security section to documentation
+
 ## [1.0.0] - 2024-01-15
 
 ### Added
